@@ -11,6 +11,22 @@ import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 
+// imports for inject mockup data to DB
+// import User from "./models/User.js";
+// import Product from "./models/Product.js";
+// import ProductStat from "./models/ProductStat.js";
+// import Transaction from "./models/Transaction.js";
+// import OverallStat from "./models/OverallStat.js";
+// import AffiliateStat from "./models/AffiliateStat.js";
+// import {
+// dataUser,
+// dataProduct,
+// dataProductStat,
+// dataTransaction,
+// dataOverallStat,
+// dataAffiliateStat,
+// } from "./data/index.js";
+
 // Configuration
 dotenv.config();
 const app = express();
@@ -29,4 +45,18 @@ app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 
 // Mongoose Setups
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 9000;
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port : ${PORT}`));
+
+    /* ONLY ADD DATA ONE TIME !!! */
+    // User.insertMany(dataUser);
+    // AffiliateStat.insertMany(dataAffiliateStat);
+    // OverallStat.insertMany(dataOverallStat);
+    // Product.insertMany(dataProduct);
+    // ProductStat.insertMany(dataProductStat);
+    // Transaction.insertMany(dataTransaction);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
