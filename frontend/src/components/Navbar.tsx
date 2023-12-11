@@ -8,7 +8,6 @@ import {
   ArrowDropDownOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
-import { setMode } from "store/global";
 import profileImage from "assets/profile.jpeg";
 import {
   AppBar,
@@ -24,6 +23,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch } from "store/hooks";
 import { User } from "types";
+import { asyncToggleTheme } from "store/global";
 
 interface NavbarProps {
   user: User | Record<string, never>;
@@ -81,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={() => dispatch(setMode())}>
+          <IconButton onClick={() => dispatch(asyncToggleTheme())}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
             ) : (

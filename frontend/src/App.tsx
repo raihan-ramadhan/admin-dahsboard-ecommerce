@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
 import Dashboard from "scenes/dashboard";
@@ -20,6 +20,13 @@ import { useAppSelector } from "store/hooks";
 function App() {
   const mode = useAppSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  useEffect(() => {
+    const mode = theme.palette.mode;
+    console.log(`Set initial mode ${mode} to localStorage`);
+    localStorage.setItem("mode", mode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="app">
