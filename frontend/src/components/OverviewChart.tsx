@@ -11,7 +11,7 @@ const OverviewChart = ({
   view: "units" | "sales";
 }) => {
   const theme = useTheme();
-  const { data, isLoading } = useGetSalesQuery();
+  const { data } = useGetSalesQuery();
 
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
     if (!data) return [];
@@ -49,8 +49,6 @@ const OverviewChart = ({
 
     return [[totalSalesLine], [totalUnitsLine]];
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!data || isLoading) return "Loading...";
 
   return (
     <ResponsiveLine

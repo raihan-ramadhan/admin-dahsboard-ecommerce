@@ -9,6 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "store/api";
 import Header from "components/Header";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Transactions = () => {
   const theme = useTheme();
@@ -56,6 +57,8 @@ const Transactions = () => {
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
     },
   ];
+
+  useDocTitle("Transactions");
 
   return (
     <Box m="1.5rem 2.5rem">

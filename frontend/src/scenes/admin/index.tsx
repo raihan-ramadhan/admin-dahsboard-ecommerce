@@ -3,6 +3,7 @@ import { useGetAdminsQuery } from "store/api";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Admin = () => {
   const theme = useTheme();
@@ -49,6 +50,8 @@ const Admin = () => {
       flex: 0.5,
     },
   ];
+
+  useDocTitle("Admins");
 
   return (
     <Box m="1.5rem 2.5rem">

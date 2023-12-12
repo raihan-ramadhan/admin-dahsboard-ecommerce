@@ -19,6 +19,7 @@ import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
 import { useGetDashboardQuery } from "store/api";
 import StatBox from "components/StatBox";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -57,6 +58,8 @@ const Dashboard = () => {
     },
   ];
 
+  useDocTitle("DashboardX");
+
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
@@ -66,10 +69,13 @@ const Dashboard = () => {
           <Button
             sx={{
               backgroundColor: theme.palette.secondary.light,
-              color: theme.palette.background.alt,
+              color: theme.palette.background.default,
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              "&:hover": {
+                backgroundColor: theme.palette.secondary[300],
+              },
             }}
           >
             <DownloadOutlined sx={{ mr: "10px" }} />

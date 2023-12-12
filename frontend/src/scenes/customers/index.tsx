@@ -2,6 +2,7 @@ import { Box, useTheme } from "@mui/material";
 import { useGetCustomersQuery } from "store/api";
 import Header from "components/Header";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Customers = () => {
   const theme = useTheme();
@@ -48,6 +49,8 @@ const Customers = () => {
       flex: 0.5,
     },
   ];
+
+  useDocTitle("Customers");
 
   return (
     <Box m="1.5rem 2.5rem">

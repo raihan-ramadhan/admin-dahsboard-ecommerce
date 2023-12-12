@@ -65,6 +65,42 @@ export const tokensLight = reverseTokens(tokensDark);
 // mui theme settings
 export const themeSettings = (mode: "dark" | "light") => {
   return {
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          html:
+            mode === "dark"
+              ? {
+                  "*::-webkit-scrollbar": {
+                    width: "10px",
+                  },
+                  "*::-webkit-scrollbar-track": {
+                    background: tokensDark.primary[500],
+                  },
+                  "*::-webkit-scrollbar-thumb:hover": {
+                    background: tokensDark.primary[200],
+                  },
+                  "*::-webkit-scrollbar-thumb": {
+                    background: tokensDark.primary[300],
+                  },
+                }
+              : {
+                  "*::-webkit-scrollbar": {
+                    width: "10px",
+                  },
+                  "*::-webkit-scrollbar-track": {
+                    background: tokensLight.secondary[900],
+                  },
+                  "*::-webkit-scrollbar-thumb:hover": {
+                    background: tokensLight.secondary[200],
+                  },
+                  "*::-webkit-scrollbar-thumb": {
+                    background: tokensLight.secondary[300],
+                  },
+                },
+        },
+      },
+    },
     palette: {
       mode,
       ...(mode === "dark"
@@ -92,7 +128,7 @@ export const themeSettings = (mode: "dark" | "light") => {
             // palette values for light mode
             primary: {
               ...tokensLight.primary,
-              main: tokensDark.grey[50],
+              main: tokensDark.grey[400],
               light: tokensDark.grey[100],
             },
             secondary: {

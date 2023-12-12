@@ -138,11 +138,21 @@ const Sidebar: React.FC<SidebarProps> = ({
           }}
         >
           <Box width="100%">
-            <Box m="1.5rem 2rem 2rem 3rem">
+            <Box m="1.5rem 0 1.5rem 0">
               <FlexBetween color={theme.palette.secondary.main}>
-                <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography variant="h4" fontWeight="bold">
-                    ECOMVISION
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap="0.5rem"
+                  width="100%"
+                >
+                  <Typography
+                    variant="h3"
+                    fontWeight="bold"
+                    textAlign="center"
+                    width="100%"
+                  >
+                    DashboardX
                   </Typography>
                 </Box>
                 {!isNonMobile && (

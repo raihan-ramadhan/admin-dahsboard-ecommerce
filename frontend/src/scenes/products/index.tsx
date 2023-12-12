@@ -10,10 +10,12 @@ import {
   CardContent,
   CardActions,
   useMediaQuery,
+  Skeleton,
 } from "@mui/material";
 import Header from "components/Header";
 import { useGetProductsQuery } from "store/api";
 import { ProductType } from "types";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Product: React.FC<
   Omit<ProductType, "createdAt" | "updatedAt" | "__v">
@@ -32,7 +34,11 @@ const Product: React.FC<
       <CardContent>
         <Typography
           sx={{ fontSize: 14 }}
-          color={theme.palette.secondary[700]}
+          color={
+            theme.palette.mode == "dark"
+              ? theme.palette.secondary[700]
+              : theme.palette.secondary[300]
+          }
           gutterBottom
         >
           {category}
@@ -40,7 +46,14 @@ const Product: React.FC<
         <Typography variant="h5" component="div">
           {name}
         </Typography>
-        <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
+        <Typography
+          sx={{ mb: "1.5rem" }}
+          color={
+            theme.palette.mode == "dark"
+              ? theme.palette.secondary[400]
+              : "black"
+          }
+        >
           ${Number(price).toFixed(2)}
         </Typography>
         <Rating value={rating} readOnly />
@@ -51,6 +64,14 @@ const Product: React.FC<
         <Button
           variant="contained"
           size="small"
+          sx={{
+            "&:hover": {
+              backgroundColor:
+                theme.palette.mode == "dark"
+                  ? undefined
+                  : theme.palette.secondary[300],
+            },
+          }}
           onClick={() => setIsExpanded(!isExpanded)}
         >
           See More
@@ -84,24 +105,28 @@ const Products = () => {
 
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
+  useDocTitle("Products");
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="PRODUCTS" subtitle="See your list of products." />
       {isError && <Typography>Something went wrong</Typography>}
 
-      {data || !isLoading ? (
-        <Box
-          mt="20px"
-          display="grid"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          justifyContent="space-between"
-          rowGap="20px"
-          columnGap="1.33%"
-          sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          }}
-        >
-          {data?.map(
+      <Box
+        mt="20px"
+        display="grid"
+        gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+        justifyContent="space-between"
+        rowGap="20px"
+        columnGap="1.33%"
+        sx={{
+          "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+          "& > span": { gridColumn: isNonMobile ? undefined : "span 4" },
+        }}
+      >
+        {/* {data || !isLoading ? ( */}
+        {data || !isLoading ? (
+          data?.map(
             ({
               _id,
               name,
@@ -124,11 +149,23 @@ const Products = () => {
                 stat={stat}
               />
             )
-          )}
-        </Box>
-      ) : (
-        <>Loading...</>
-      )}
+          )
+        ) : (
+          <>
+            {Array.from({ length: 16 }, (_, index) => (
+              <Skeleton
+                key={index}
+                variant="rectangular"
+                sx={{
+                  height: "14rem",
+                  backgroundImage: "none",
+                  borderRadius: "0.55rem",
+                }}
+              />
+            ))}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

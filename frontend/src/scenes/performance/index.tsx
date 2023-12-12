@@ -4,11 +4,14 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import { useAppSelector } from "store/hooks";
+import { useDocTitle } from "hooks/use-doc-title";
 
 const Performance = () => {
   const theme = useTheme();
   const userId = useAppSelector((state) => state.global.userId);
   const { data, isLoading } = useGetUserPerformanceQuery(userId);
+
+  useDocTitle("Performance");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns: GridColDef<any>[] = [
