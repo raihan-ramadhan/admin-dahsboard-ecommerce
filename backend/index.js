@@ -36,9 +36,18 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://admin-dahsboard-ecommerce.vercel.app"],
+    credentials: true,
+    methods: ["GET"],
+  })
+);
 
 // Routes
+app.get("/", (req, res) => {
+  res.json("Hello");
+});
 app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
