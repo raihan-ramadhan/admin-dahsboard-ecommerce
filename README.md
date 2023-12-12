@@ -1,6 +1,9 @@
 # Welcome to DashboardX
 
-[Images HERE]
+![dashboard page preview](https://github.com/raihan-ramadhan/admin-dahsboard-ecommerce/assets/116264857/08ea1d37-6c6c-4950-8d70-8cb182686432)
+![geography page preview](https://github.com/raihan-ramadhan/admin-dahsboard-ecommerce/assets/116264857/ba0f8b70-b850-4dde-ab21-0c312993e759)
+![products page preview](https://github.com/raihan-ramadhan/admin-dahsboard-ecommerce/assets/116264857/438a9428-7108-44ba-a447-421e932d55b0)
+
 
 ## About DashboardX
 
