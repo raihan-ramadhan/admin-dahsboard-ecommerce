@@ -3,6 +3,8 @@ import { useGetCustomersQuery } from "store/api";
 import Header from "components/Header";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useDocTitle } from "hooks/use-doc-title";
+import Loading from "components/Loading";
+import { createElement } from "react";
 
 const Customers = () => {
   const theme = useTheme();
@@ -53,7 +55,16 @@ const Customers = () => {
   useDocTitle("Customers");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header title="CUSTOMERS" subtitle="List of Customers" />
       <Box
         mt="40px"
@@ -84,6 +95,21 @@ const Customers = () => {
         }}
       >
         <DataGrid
+          slots={{
+            loadingOverlay: () =>
+              createElement(
+                "div",
+                {
+                  style: {
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                },
+                <Loading />
+              ),
+          }}
           loading={isLoading}
           getRowId={(row) => row._id}
           rows={data || []}

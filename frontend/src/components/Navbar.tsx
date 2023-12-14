@@ -58,19 +58,49 @@ const Navbar: React.FC<NavbarProps> = ({
         boxShadow: "none",
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: {
+            default: "0.5rem",
+            sm: "1rem",
+          },
+          px: {
+            default: "16px",
+            sm: "32px",
+          },
+        }}
+      >
         {/* LEFT SIDE */}
-        <FlexBetween>
-          <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <MenuIcon />
+        <FlexBetween
+          sx={{
+            gap: {
+              default: "0.5rem",
+              sm: "1rem",
+            },
+          }}
+        >
+          <IconButton
+            sx={{
+              display: {
+                sm: "none",
+                width: "contents",
+                height: "contents",
+                flexShrink: "none",
+              },
+            }}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <MenuIcon sx={{ fontSize: "25px" }} />
           </IconButton>
           <FlexBetween
             style={{
               backgroundColor: theme.palette.background.alt,
             }}
             borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
+            gap="1rem"
+            p="0.1rem 1rem"
           >
             <InputBase placeholder="Search..." />
             <IconButton>
@@ -80,7 +110,14 @@ const Navbar: React.FC<NavbarProps> = ({
         </FlexBetween>
 
         {/* RIGHT SIDE */}
-        <FlexBetween gap="1.5rem">
+        <FlexBetween
+          sx={{
+            gap: {
+              default: "0.5rem",
+              sm: "1rem",
+            },
+          }}
+        >
           <IconButton onClick={() => dispatch(asyncToggleTheme())}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
@@ -88,11 +125,26 @@ const Navbar: React.FC<NavbarProps> = ({
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
-          <IconButton>
+
+          <IconButton
+            sx={{
+              display: {
+                sm: "none",
+                md: "block",
+              },
+            }}
+          >
             <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
 
-          <FlexBetween>
+          <FlexBetween
+            sx={{
+              display: {
+                default: "none",
+                lg: "block",
+              },
+            }}
+          >
             <Button
               onClick={handleClick}
               sx={{

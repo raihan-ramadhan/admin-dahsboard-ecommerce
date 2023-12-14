@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import {
@@ -7,23 +8,17 @@ import {
   PersonAdd,
   Traffic,
 } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
 import { useGetDashboardQuery } from "store/api";
 import StatBox from "components/StatBox";
 import { useDocTitle } from "hooks/use-doc-title";
+import Loading from "components/Loading";
 
 const Dashboard = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetDashboardQuery();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,8 +56,17 @@ const Dashboard = () => {
   useDocTitle("DashboardX");
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <FlexBetween>
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
+      <FlexBetween flexWrap="wrap" gap="1rem">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
         <Box>
@@ -90,9 +94,6 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="160px"
         gap="20px"
-        sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
-        }}
       >
         {/* ROW 1 */}
         <StatBox
@@ -118,9 +119,12 @@ const Dashboard = () => {
           }
         />
         <Box
-          gridColumn="span 8"
           gridRow="span 2"
           sx={{
+            gridColumn: {
+              default: "span 12",
+              lg: "span 8",
+            },
             backgroundColor: theme.palette.background.alt,
           }}
           p="1rem"
@@ -153,12 +157,16 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
           gridRow="span 3"
+          borderRadius="0.55rem !important"
+          overflow="hidden"
           sx={{
+            gridColumn: {
+              default: "span 12",
+              lg: "span 8",
+            },
             "& .MuiDataGrid-root": {
               border: "none",
-              borderRadius: "5rem",
             },
             "& .MuiDataGrid-cell": {
               borderBottom: "none",
@@ -183,18 +191,38 @@ const Dashboard = () => {
         >
           <DataGrid
             loading={isLoading || !data}
+            slots={{
+              loadingOverlay: () =>
+                createElement(
+                  "div",
+                  {
+                    style: {
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                  },
+                  <Loading />
+                ),
+            }}
             getRowId={(row) => row._id}
             rows={(data && data.transactions) || []}
             columns={columns}
           />
         </Box>
         <Box
-          gridColumn="span 4"
           gridRow="span 3"
           sx={{
+            gridColumn: {
+              default: "span 12",
+              lg: "span 4",
+            },
             backgroundColor: theme.palette.background.alt,
+            overflow: "hidden",
           }}
-          p="1.5rem"
+          px="1.5rem"
+          py="1rem"
           borderRadius="0.55rem"
         >
           <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>

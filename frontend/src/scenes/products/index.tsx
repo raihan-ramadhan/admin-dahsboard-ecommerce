@@ -9,13 +9,13 @@ import {
   Typography,
   CardContent,
   CardActions,
-  useMediaQuery,
   Skeleton,
 } from "@mui/material";
 import Header from "components/Header";
 import { useGetProductsQuery } from "store/api";
 import { ProductType } from "types";
 import { useDocTitle } from "hooks/use-doc-title";
+import { useIsSidebarOpen } from "scenes/layout";
 
 const Product: React.FC<
   Omit<ProductType, "createdAt" | "updatedAt" | "__v">
@@ -102,26 +102,38 @@ const Product: React.FC<
 
 const Products = () => {
   const { data, isLoading, isError } = useGetProductsQuery();
-
-  const isNonMobile = useMediaQuery("(min-width: 1000px)");
+  const { isSidebarOpen } = useIsSidebarOpen();
 
   useDocTitle("Products");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header title="PRODUCTS" subtitle="See your list of products." />
       {isError && <Typography>Something went wrong</Typography>}
 
       <Box
         mt="20px"
         display="grid"
-        gridTemplateColumns="repeat(4, minmax(0, 1fr))"
         justifyContent="space-between"
         rowGap="20px"
         columnGap="1.33%"
         sx={{
-          "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          "& > span": { gridColumn: isNonMobile ? undefined : "span 4" },
+          "& > *": { gridColumn: "span 1" },
+          gridTemplateColumns: {
+            default: "repeat(1, minmax(0, 1fr))",
+            sm: isSidebarOpen ? undefined : "repeat(2, minmax(0, 1fr))",
+            md: "repeat(3, minmax(0, 1fr))",
+            xl: "repeat(4, minmax(0, 1fr))",
+          },
         }}
       >
         {/* {data || !isLoading ? ( */}

@@ -4,6 +4,8 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import { useDocTitle } from "hooks/use-doc-title";
+import { createElement } from "react";
+import Loading from "components/Loading";
 
 const Admin = () => {
   const theme = useTheme();
@@ -54,7 +56,16 @@ const Admin = () => {
   useDocTitle("Admins");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header title="ADMINS" subtitle="Managing admins and list of admins" />
       <Box
         mt="40px"
@@ -91,6 +102,19 @@ const Admin = () => {
           columns={columns}
           slots={{
             columnMenu: CustomColumnMenu,
+            loadingOverlay: () =>
+              createElement(
+                "div",
+                {
+                  style: {
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                },
+                <Loading />
+              ),
           }}
         />
       </Box>

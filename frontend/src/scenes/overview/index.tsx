@@ -10,7 +10,16 @@ const Overview = () => {
   useDocTitle("Overview");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header
         title="OVERVIEW"
         subtitle="Overview of general revenue and profit"

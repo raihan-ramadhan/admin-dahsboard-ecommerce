@@ -1,18 +1,16 @@
 import {
   Box,
-  List,
-  Drawer,
   Divider,
-  ListItem,
   useTheme,
   IconButton,
   Typography,
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Tooltip,
+  Fade,
 } from "@mui/material";
 import {
-  ChevronLeft,
   HomeOutlined,
   TodayOutlined,
   PublicOutlined,
@@ -32,6 +30,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/profile.jpeg";
 import { User } from "types";
+
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import { Sidebar as ProSidebar, MenuItem, Menu } from "react-pro-sidebar";
+import { visuallyHidden } from "@mui/utils";
 
 const navItems = [
   {
@@ -95,18 +98,14 @@ const navItems = [
 // Record<string, never> mean string object / "{}"
 interface SidebarProps {
   user: User | Record<string, never>;
-  drawerWidth: number;
   isSidebarOpen: boolean;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isNonMobile: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   user,
-  drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
-  isNonMobile,
 }) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
@@ -118,135 +117,250 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [pathname]);
 
   return (
-    <Box component="nav">
-      {isSidebarOpen && (
-        <Drawer
-          open={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          variant="persistent"
-          anchor="left"
-          sx={{
-            width: drawerWidth,
-            "& .MuiDrawer-paper": {
-              color: theme.palette.secondary[200],
-              backgroundColor: theme.palette.background.alt,
-              boxSixing: "border-box",
-              borderWidth: isNonMobile ? 0 : "2px",
-              width: drawerWidth,
-              overflow: "hidden !important",
+    <Box
+      height="100%"
+      position="sticky"
+      top="0"
+      sx={{
+        width: {
+          default: isSidebarOpen ? undefined : 0,
+          sm: "unset",
+        },
+        zIndex: {
+          default: "9999",
+          sm: "unset",
+        },
+        "& .ps-sidebar-root": {
+          border: "none",
+          "& .ps-sidebar-container": {
+            background: `${theme.palette.background.alt} !important`,
+            height: "100vh",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            "& .ps-menu-button": {
+              height: "unset !important",
             },
+            "& .ps-menu-button:hover": {
+              backgroundColor: "transparent",
+            },
+            "& .ps-menu-icon": {
+              width: "100%",
+              margin: 0,
+            },
+            "& .ps-menu-root": {
+              "& ul": {
+                position: "relative",
+                overflowY: "auto",
+                overflowX: "hidden",
+              },
+            },
+          },
+        },
+      }}
+    >
+      <ProSidebar
+        collapsed={!isSidebarOpen}
+        style={{
+          height: "100vh",
+        }}
+        toggled={isSidebarOpen}
+        customBreakPoint="599px"
+        onBackdropClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        <Menu
+          style={{
+            flex: 1,
+            overflowY: "auto",
           }}
         >
-          <Box width="100%">
-            <Box m="1.5rem 0 1.5rem 0">
-              <FlexBetween color={theme.palette.secondary.main}>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  gap="0.5rem"
-                  width="100%"
+          {/* LOGO AND Left Arrow ICON */}
+          <MenuItem
+            icon={
+              isSidebarOpen ? undefined : (
+                <Tooltip
+                  arrow
+                  title={<Typography fontSize={14}>Open</Typography>}
+                  placement="right"
                 >
-                  <Typography
-                    variant="h3"
-                    fontWeight="bold"
-                    textAlign="center"
-                    width="100%"
-                  >
-                    DashboardX
-                  </Typography>
-                </Box>
-                {!isNonMobile && (
                   <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                    <ChevronLeft />
+                    <KeyboardDoubleArrowRightIcon />
                   </IconButton>
-                )}
-              </FlexBetween>
-            </Box>
-            <List>
-              {navItems.map(({ text, icon }) => {
-                if (!icon) {
-                  return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
-                      {text}
-                    </Typography>
-                  );
-                }
-                const lcText = text.toLowerCase();
+                </Tooltip>
+              )
+            }
+            style={{
+              padding: "1.5rem 0",
+              color: theme.palette.secondary.main,
+              cursor: "default",
+            }}
+          >
+            <Fade in={isSidebarOpen} unmountOnExit>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                gap="0.5rem"
+                width="100%"
+                px="1rem"
+                position="relative"
+              >
+                <Typography
+                  ml="2rem"
+                  variant="h4"
+                  fontWeight="bold"
+                  display="inline"
+                  sx={{
+                    cursor: "text",
+                  }}
+                >
+                  DashboardX
+                </Typography>
 
-                return (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate(`/${lcText}`);
-                        setActive(lcText);
-                      }}
-                      sx={{
-                        backgroundColor:
-                          active === lcText
-                            ? theme.palette.secondary[300]
-                            : "transparent",
-                        color:
-                          active === lcText
-                            ? theme.palette.primary[600]
-                            : theme.palette.secondary[100],
-                        "&:hover *": {
-                          color: theme.palette.secondary[100],
-                        },
-                      }}
+                <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                  <KeyboardDoubleArrowLeftIcon />
+                </IconButton>
+              </Box>
+            </Fade>
+            <Box sx={visuallyHidden}>Open Sidebar</Box>
+          </MenuItem>
+
+          <Divider sx={{ display: isSidebarOpen ? "none" : undefined }} />
+
+          {navItems.map(({ text, icon }) => {
+            if (!icon) {
+              if (!isSidebarOpen) return <Divider />;
+              return (
+                <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
+                  {text}
+                </Typography>
+              );
+            }
+            const lcText = text.toLowerCase();
+
+            return (
+              <MenuItem
+                key={text}
+                icon={
+                  isSidebarOpen ? undefined : (
+                    <Tooltip
+                      arrow
+                      title={<Typography fontSize={14}>{text}</Typography>}
+                      placement="right"
                     >
-                      <ListItemIcon
+                      <IconButton
+                        onClick={() => {
+                          navigate(`/${lcText}`);
+                          setActive(lcText);
+                        }}
                         sx={{
-                          ml: "2rem",
+                          backgroundColor:
+                            active === lcText
+                              ? theme.palette.secondary[300]
+                              : "transparent",
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                              : theme.palette.secondary[100],
+                          "&:hover *": {
+                            color: theme.palette.secondary[100],
+                          },
                         }}
                       >
                         {icon}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Box>
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                style={{
+                  color: theme.palette.secondary.main,
+                  cursor: "default",
+                  padding: "0",
+                  margin: !isSidebarOpen ? "1rem" : undefined,
+                }}
+              >
+                <Fade in={isSidebarOpen} unmountOnExit>
+                  <ListItemButton
+                    onClick={() => {
+                      navigate(`/${lcText}`);
+                      setActive(lcText);
+                    }}
+                    sx={{
+                      backgroundColor:
+                        active === lcText
+                          ? theme.palette.secondary[300]
+                          : "transparent",
+                      color:
+                        active === lcText
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[100],
+                      "&:hover *": {
+                        color: theme.palette.secondary[100],
+                      },
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        ml: "2rem",
+                        color:
+                          active === lcText
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[200],
+                      }}
+                    >
+                      {icon}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                    {active === lcText && (
+                      <ChevronRightOutlined sx={{ mr: "0.5rem" }} />
+                    )}
+                  </ListItemButton>
+                </Fade>
+                <Box sx={visuallyHidden}>{lcText}</Box>
+              </MenuItem>
+            );
+          })}
+        </Menu>
 
-          <Box
-            position="absolute"
+        <Box
+          sx={{
+            width: "100%",
+            paddingBottom: "2rem",
+            backgroundColor: theme.palette.background.alt,
+          }}
+        >
+          <Divider
             sx={{
-              insetX: 0,
-              bottom: 0,
-              width: "100%",
-              paddingX: "1rem",
-              paddingBottom: "2rem",
-              backgroundColor: theme.palette.background.alt,
+              mb: "2rem",
             }}
+          />
+          <FlexBetween
+            textTransform="none"
+            gap="1rem"
+            overflow={"hidden"}
+            display="flex"
+            width={"100%"}
+            sx={{
+              justifyContent: "center !important",
+            }}
+            px="1rem"
           >
-            <Divider
+            <Box
+              component="img"
+              alt="profile"
+              src={profileImage}
+              height="40px"
+              width="40px"
+              borderRadius="50%"
               sx={{
-                marginBottom: "2rem",
+                objectFit: "cover",
+                width: "40px",
+                height: "40px",
+                flexShrink: "0",
               }}
             />
-            <FlexBetween textTransform="none" gap="1rem" overflow={"hidden"}>
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="40px"
-                width="40px"
-                borderRadius="50%"
-                sx={{
-                  objectFit: "cover",
-                  width: "40px",
-                  height: "40px",
-                  flexShrink: "0",
-                }}
-              />
+            <Fade in={isSidebarOpen} unmountOnExit>
               <Box
                 textAlign="left"
                 sx={{
@@ -273,18 +387,22 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {user.occupation} skalsalksalkskal
                 </Typography>
               </Box>
-              <SettingsOutlined
-                sx={{
-                  flexShrink: "0",
-                  color: theme.palette.secondary[300],
-                  fontSize: "25px ",
-                  width: "25px",
-                }}
-              />
-            </FlexBetween>
-          </Box>
-        </Drawer>
-      )}
+            </Fade>
+            <Fade in={isSidebarOpen} unmountOnExit>
+              <IconButton>
+                <SettingsOutlined
+                  sx={{
+                    flexShrink: "0",
+                    color: theme.palette.secondary[300],
+                    fontSize: "25px ",
+                    width: "25px",
+                  }}
+                />
+              </IconButton>
+            </Fade>
+          </FlexBetween>
+        </Box>
+      </ProSidebar>
     </Box>
   );
 };

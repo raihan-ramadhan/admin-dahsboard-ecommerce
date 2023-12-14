@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useState } from "react";
+import { useState, createElement } from "react";
 import { Box, useTheme } from "@mui/material";
 import {
   DataGrid,
@@ -10,6 +10,7 @@ import {
 import { useGetTransactionsQuery } from "store/api";
 import Header from "components/Header";
 import { useDocTitle } from "hooks/use-doc-title";
+import Loading from "components/Loading";
 
 const Transactions = () => {
   const theme = useTheme();
@@ -61,7 +62,16 @@ const Transactions = () => {
   useDocTitle("Transactions");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header title="TRANSACTIONS" subtitle="Entire list of transactions" />
       <Box
         height="80vh"
@@ -103,7 +113,22 @@ const Transactions = () => {
             // @ts-ignore
             setSort(...newSortModel);
           }}
-          slots={{ toolbar: GridToolbar }}
+          slots={{
+            toolbar: GridToolbar,
+            loadingOverlay: () =>
+              createElement(
+                "div",
+                {
+                  style: {
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                },
+                <Loading />
+              ),
+          }}
           slotProps={{
             toolbar: {
               showQuickFilter: true,

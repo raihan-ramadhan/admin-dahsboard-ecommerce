@@ -4,14 +4,13 @@
 ![geography page preview](https://github.com/raihan-ramadhan/admin-dahsboard-ecommerce/assets/116264857/ba0f8b70-b850-4dde-ab21-0c312993e759)
 ![products page preview](https://github.com/raihan-ramadhan/admin-dahsboard-ecommerce/assets/116264857/438a9428-7108-44ba-a447-421e932d55b0)
 
-
 ## About DashboardX
 
 Features:
 
 - Great ui and ux with Material UI component and icon
 - Amazing looking chart with [nivo chart](https://nivo.rocks/)
-- Full responsivity and mobile UI (still on process)
+- Full responsivity and mobile UI
 - state management with redux toolkit
 - Light / Dark mode with redux persist and system preference
 - query request with RTK query

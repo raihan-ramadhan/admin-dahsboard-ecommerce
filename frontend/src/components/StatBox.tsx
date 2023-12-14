@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import FlexBetween from "./FlexBetween";
 import { ReactElement } from "react";
+import { useIsSidebarOpen } from "scenes/layout";
 
 interface StatBoxProps {
   title: string;
@@ -19,9 +20,10 @@ const StatBox: React.FC<StatBoxProps> = ({
   description,
 }) => {
   const theme = useTheme();
+  const { isSidebarOpen } = useIsSidebarOpen();
+
   return (
     <Box
-      gridColumn="span 2"
       gridRow="span 1"
       display="flex"
       flexDirection="column"
@@ -30,6 +32,12 @@ const StatBox: React.FC<StatBoxProps> = ({
       flex="1 1 100%"
       borderRadius="0.55rem"
       sx={{
+        gridColumn: {
+          default: "span 12",
+          sm: isSidebarOpen ? undefined : "span 6",
+          md: "span 6",
+          lg: "span 2",
+        },
         backgroundColor: theme.palette.background.alt,
       }}
     >

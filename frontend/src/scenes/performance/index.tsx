@@ -5,6 +5,8 @@ import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import { useAppSelector } from "store/hooks";
 import { useDocTitle } from "hooks/use-doc-title";
+import Loading from "components/Loading";
+import { createElement } from "react";
 
 const Performance = () => {
   const theme = useTheme();
@@ -46,7 +48,16 @@ const Performance = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box
+      my="1.5rem"
+      sx={{
+        mx: {
+          default: "16px",
+          sm: "32px",
+        },
+        paddingBottom: "5rem",
+      }}
+    >
       <Header
         title="PERFORMANCE"
         subtitle="Track your Affiliate Sales Performance Here"
@@ -86,6 +97,19 @@ const Performance = () => {
           columns={columns}
           slots={{
             columnMenu: CustomColumnMenu,
+            loadingOverlay: () =>
+              createElement(
+                "div",
+                {
+                  style: {
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                },
+                <Loading />
+              ),
           }}
         />
       </Box>

@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { ResponsiveLine, Serie } from "@nivo/line";
-import { useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "store/api";
+import Loading from "./Loading";
 
 const OverviewChart = ({
   isDashboard = false,
@@ -49,6 +50,20 @@ const OverviewChart = ({
 
     return [[totalSalesLine], [totalUnitsLine]];
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!data || !(totalSalesLine && totalUnitsLine))
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loading />
+      </Box>
+    );
 
   return (
     <ResponsiveLine
